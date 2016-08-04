@@ -154,6 +154,12 @@ RSpec.describe HashKit::Helper do
         entity.entity_array = [child_entity, child_entity]
       end
     end
+   
+    context 'entity to convert is nil' do
+      it 'returns nil' do
+        expect(subject.to_hash(nil)).to eq nil
+      end
+    end
 
     context 'single layer entity' do
       it 'should create a hash' do

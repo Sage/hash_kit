@@ -15,7 +15,11 @@ module HashKit
       end
     end
 
+    # Convert an object to a hash representation of its instance variables.
+    # @return [Hash] if the object is not nil, otherwise nil is returned.
     def to_hash(obj)
+      return nil unless obj
+
       hash = {}
       obj.instance_variables.each do |key|
         hash[key[1..-1].to_sym] = deeply_to_hash(obj.instance_variable_get(key))
