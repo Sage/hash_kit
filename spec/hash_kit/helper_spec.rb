@@ -335,16 +335,34 @@ RSpec.describe HashKit::Helper do
     let(:hash) do
       {
           'key1' => 'value1',
-          key2: 'value2'
+          key2: 'value2',
+          key3: [
+              {
+                  key4: 'value4',
+                  'key5' => 'value5'
+              }
+          ],
+          key6: {
+              key7: 'value7',
+              'key8' => 'value8'
+          }
       }
     end
     it 'should allow access to a string key from a symbol' do
       subject.indifferent!(hash)
-      expect(hash[:key1]).to eq hash['key1']
+      expect(hash[:key1]).to eq 'value1'
     end
     it 'should allow access to a symbol key from a string' do
       subject.indifferent!(hash)
-      expect(hash['key2']).to eq hash[:key2]
+      expect(hash['key2']).to eq 'value2'
+    end
+    it 'should allow indifferent access to a key within an array' do
+      subject.indifferent!(hash)
+      expect(hash[:key3][0]['key4']).to eq 'value4'
+    end
+    it 'should allow indifferent access to a key within an nested hash' do
+      subject.indifferent!(hash)
+      expect(hash[:key6]['key7']).to eq 'value7'
     end
   end
 end

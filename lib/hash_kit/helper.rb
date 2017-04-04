@@ -3,6 +3,10 @@ module HashKit
 
     #This method is called to make a hash allow indifferent access (it will accept both strings & symbols for a valid key).
     def indifferent!(hash)
+      unless hash.is_a?(Hash)
+        return
+      end
+
       #set the default proc to allow the key to be either string or symbol if a matching key is found.
       hash.default_proc = proc do |h, k|
         if h.key?(k.to_s)
@@ -16,12 +20,30 @@ module HashKit
 
       #recursively process any child hashes
       hash.each do |key,value|
-        if hash[key] != nil && hash[key].is_a?(Hash)
-          indifferent(hash[key])
+        if hash[key] != nil
+          if hash[key].is_a?(Hash)
+            indifferent!(hash[key])
+          elsif hash[key].is_a?(Array)
+            indifferent_array!(hash[key])
+          end
         end
       end
 
       hash
+    end
+
+    def indifferent_array!(array)
+      unless array.is_a?(Array)
+        return
+      end
+
+      array.each do |i|
+        if i.is_a?(Hash)
+          indifferent!(i)
+        elsif i.is_a?(Array)
+          indifferent_array!(i)
+        end
+      end
     end
 
     #This method is called to convert all the keys of a hash into symbols to allow consistent usage of hashes within your Ruby application.
