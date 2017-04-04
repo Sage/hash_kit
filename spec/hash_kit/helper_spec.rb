@@ -330,4 +330,21 @@ RSpec.describe HashKit::Helper do
       end
     end
   end
+
+  describe '#indifferent' do
+    let(:hash) do
+      {
+          'key1' => 'value1',
+          key2: 'value2'
+      }
+    end
+    it 'should allow access to a string key from a symbol' do
+      h = subject.indifferent(hash)
+      expect(h[:key1]).to eq hash['key1']
+    end
+    it 'should allow access to a symbol key from a string' do
+      h = subject.indifferent(hash)
+      expect(h['key2']).to eq hash[:key2]
+    end
+  end
 end
