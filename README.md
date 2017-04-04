@@ -25,6 +25,17 @@ Or install it yourself as:
 
 This is class contains helper methods for working with Ruby hashes.
 
+## #indifferent!(hash)
+
+This method is called to make a hash allow indifferent access to key values. Allowing a valid key to be accessed by either a string or symbol.
+
+    hash = { 'key1' => 'value1', key2: 'value2' }             
+
+    helper.indifferent!(hash)
+    
+    value1 = hash[:key1] #This will return 'value1'
+    value2 = hash['key2'] #This will return 'value2'
+
 ## #symbolize
 
 This method is called to convert all keys within a hash into symbols to allow consistent usage of hashes within your Ruby application.
