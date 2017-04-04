@@ -2,7 +2,7 @@ module HashKit
   class Helper
 
     #This method is called to make a hash allow indifferent access (it will accept both strings & symbols for a valid key).
-    def indifferent(hash)
+    def indifferent!(hash)
       #set the default proc to allow the key to be either string or symbol if a matching key is found.
       hash.default_proc = proc do |h, k|
         if h.key?(k.to_s)
