@@ -154,6 +154,13 @@ RSpec.describe HashKit::Helper do
         entity.entity_array = [child_entity, child_entity]
       end
     end
+
+    context 'obj is Hash' do
+      let(:hash) { { line1: 'line1' } }
+      it 'returns the hash' do
+        expect(subject.to_hash(hash)).to be hash
+      end
+    end
    
     context 'entity to convert is nil' do
       it 'returns nil' do
