@@ -64,9 +64,7 @@ module HashKit
     # @return [Hash] if the object is not nil, otherwise nil is returned.
     def to_hash(obj)
       return nil unless obj
-      if obj.is_a?(Hash)
-        return obj
-      end
+      return obj if obj.is_a?(Hash)
 
       hash = {}
       obj.instance_variables.each do |key|
