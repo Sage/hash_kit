@@ -203,7 +203,8 @@ RSpec.describe HashKit::Helper do
       DateTime.now,
       nil         ,
       true        ,
-      false
+      false       ,
+      :foo
     ].each do |value|
       context "when text is set to '#{value}'" do
         let(:child_entity) do

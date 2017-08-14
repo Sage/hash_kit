@@ -123,7 +123,7 @@ module HashKit
 
     def standard_type?(obj)
       [
-        String, Fixnum, Numeric, Float, Date, DateTime, Time, Integer, TrueClass, FalseClass, NilClass
+        String, Fixnum, Numeric, Float, Date, DateTime, Time, Integer, TrueClass, FalseClass, NilClass, Symbol
       ].detect do |klass|
         obj.is_a?(klass)
       end
