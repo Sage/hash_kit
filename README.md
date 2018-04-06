@@ -1,5 +1,10 @@
 # HashKit
 
+[![Build Status](https://travis-ci.org/Sage/hash_kit.svg?branch=master)](https://travis-ci.org/Sage/hash_kit)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3ffb56b92ca96c783093/maintainability)](https://codeclimate.com/github/Sage/hash_kit/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3ffb56b92ca96c783093/test_coverage)](https://codeclimate.com/github/Sage/hash_kit/test_coverage)
+[![Gem Version](https://badge.fury.io/rb/hash_kit.svg)](https://badge.fury.io/rb/hash_kit)
+
 Welcome to your HashKit! HashKit is a toolkit for working with Ruby Hashes.
 
 ## Installation
@@ -12,11 +17,15 @@ gem 'hash_kit'
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install hash_kit
+```bash
+$ gem install hash_kit
+```
 
 ## Usage
 
@@ -28,87 +37,98 @@ This is class contains helper methods for working with Ruby hashes.
 ## #indifferent!(hash)
 
 This method is called to make a hash allow indifferent access to key values. Allowing a valid key to be accessed by either a string or symbol.
+```ruby
+hash = { 'key1' => 'value1', key2: 'value2' }
 
-    hash = { 'key1' => 'value1', key2: 'value2' }             
+helper.indifferent!(hash)
 
-    helper.indifferent!(hash)
-    
-    value1 = hash[:key1] #This will return 'value1'
-    value2 = hash['key2'] #This will return 'value2'
+value1 = hash[:key1] #This will return 'value1'
+value2 = hash['key2'] #This will return 'value2'
+```
 
 ## #symbolize
 
 This method is called to convert all keys within a hash into symbols to allow consistent usage of hashes within your Ruby application.
 
-    hash = helper.symbolize(hash)
+```ruby
+hash = helper.symbolize(hash)
+```
 
 ## #stringify
 
 This method is called to convert all keys within a hash into strings to allow consistent usage of hashes within your Ruby application.
 
-    hash = helper.stringify(hash)
+```ruby
+hash = helper.stringify(hash)
+```
 
 ## #to_hash
 
 This method is called to convert a object instance into a hash.
 
+```ruby
     hash = helper.to_hash(obj)
+```
 
 ## #from_hash
 
 This method is called to convert a hash into an object.
 
-    #class definition
+```ruby
+#class definition
 
-    class TestEntity
-		attr_accessor :text, :numeric, :time
-	end
-...
+class TestEntity
+  attr_accessor :text, :numeric, :time
+end
+```
 
-    obj = helper.from_hash(hash, TestEntity)
+```ruby
+obj = helper.from_hash(hash, TestEntity)
+```
 
 
 Additionally an array of HashKit::TransformItems can be specified to allow mapping from nested hashes into child entities, and nested arrays of hashes into nested arrays of entities.
 
 Example:
 
-	#class definitions
+```ruby
+#class definitions
 
-	class TestEntity
-		attr_accessor :text, :numeric, :time
-	end
-	class ComplexEntity
-		attr_accessor :nested_entity, :nested_entity_array
-	end
+class TestEntity
+  attr_accessor :text, :numeric, :time
+end
 
-...
+class ComplexEntity
+  attr_accessor :nested_entity, :nested_entity_array
+end
+```
 
-	#transform method
+```ruby
+# transform method
 
+# transform item definitions
+transform1 = HashKit::TransformItem.new.tap do |t|
+  t.key = :nested_entity
+  t.klass = TestEntity
+end
+transform2 = HashKit::TransformItem.new.tap do |t|
+  t.key = :nested_entity_array
+  t.klass = TestEntity
+end
+transforms = [transform1, transform2]
 
-		#transform item definitions
-		transform1 = HashKit::TransformItem.new.tap do |t|
-						t.key = :nested_entity,
-						t.klass = TestEntity
-					end
-		transform2 = HashKit::TransformItem.new.tap do |t|
-						t.key = :nested_entity_array,
-						t.klass = TestEntity
-					end
-		transforms = [transform1, transform2]
+# hash definition
+hash = {
+  nested_entity: { text: 'abc', numeric: 5 },
+  nested_entity_array: [
+    { text: 'abc', numeric: 5 },
+    { text: 'abc', numeric: 5 }
+  ]
+}
 
-		#hash definition
-		hash = {
-				nested_entity: { text: 'abc', numeric: 5 },
-				nested_entity_array: [
-							{ text: 'abc', numeric: 5 },
-							{ text: 'abc', numeric: 5 }
-										]
-				}
-
-		#to hash call
-		obj = helper.from_hash(hash, ComplexEntity, transforms)
-	end
+#to hash call
+obj = helper.from_hash(hash, ComplexEntity, transforms)
+```
 
 ## Development
 
