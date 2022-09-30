@@ -75,9 +75,8 @@ module HashKit
 
     def from_hash(hash, klass, transforms =  [])
       obj = klass.new
-      if hash ==nil || hash == {}
-        return obj
-      end
+      return obj if hash.nil? || hash.empty?
+      raise ArgumentError, "#{hash.inspect} is not a hash" unless hash.is_a?(Hash)
 
       hash.each do |k,v|
         if !obj.respond_to?(k)

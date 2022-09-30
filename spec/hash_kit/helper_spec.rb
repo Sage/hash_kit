@@ -337,6 +337,12 @@ RSpec.describe HashKit::Helper do
         expect(obj.entity_array[1]).to be_a(TestEntity)
       end
     end
+
+    context 'when hash is not a hash' do
+      it 'raises an ArgumentError' do
+        expect { subject.from_hash('Not a hash', TestEntity, transforms) }.to raise_error(ArgumentError)
+      end
+    end
   end
 
   describe '#indifferent' do
