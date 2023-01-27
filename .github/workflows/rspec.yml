@@ -22,5 +22,6 @@ jobs:
         with:
           prefix: '/gem_src'
           debug: true
+          verifyDownload: true
           coverageLocations: |
             ${{github.workspace}}/coverage/.resultset.json:simplecov
