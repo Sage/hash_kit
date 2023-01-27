@@ -75,6 +75,12 @@ module HashKit
       hash
     end
 
+    # Return an object of type klass from the values in the given hash
+    #
+    # @param [Hash] hash
+    # @param [Class] klass
+    # @param [Array] transforms
+    # @return [Object]
     def from_hash(hash, klass, transforms = [])
       obj = klass.new
       return obj if hash.nil? || hash.empty?
