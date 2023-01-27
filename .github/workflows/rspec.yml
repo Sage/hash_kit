@@ -20,7 +20,6 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          prefix: '/gem_src'
           debug: true
           verifyDownload: true
           coverageLocations: |
