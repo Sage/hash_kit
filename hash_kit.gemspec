@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/sage/hash_kit'
   spec.license       = 'MIT'
 
-  spec.files         = Dir.glob("{bin,lib}/**/**/**")
+  spec.files         = Dir.glob('{bin,lib}/**/**/**')
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
