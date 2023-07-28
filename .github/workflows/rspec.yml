@@ -22,6 +22,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           debug: true
-          verifyDownload: true
           coverageLocations: |
             ${{github.workspace}}/coverage/.resultset.json:simplecov
+          prefix: /gem_src
+          verifyDownload: true
