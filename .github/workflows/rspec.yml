@@ -24,4 +24,4 @@ jobs:
           debug: true
           verifyDownload: true
           coverageLocations: |
-            /gem_src/coverage/.resultset.json:simplecov
+            ${{github.workspace}}/coverage/.resultset.json:simplecov
