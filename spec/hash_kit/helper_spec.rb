@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe HashKit::Helper do
   describe '#symbolize' do
-
     context 'when a single layer hash with string keys is specified' do
       let(:hash) { { 'key1' => 'value1', 'key2' => 'value2' } }
 
@@ -64,7 +65,6 @@ RSpec.describe HashKit::Helper do
   end
 
   describe '#stringify' do
-
     context 'when a single layer hash with symbol keys is specified' do
       let(:hash) { { :key1 => 'value1', :key2 => 'value2' } }
 
@@ -122,11 +122,9 @@ RSpec.describe HashKit::Helper do
         expect(new_hash['key3'][1].has_key?(:key4)).to be false
       end
     end
-
   end
 
   describe '#to_hash' do
-
     let(:key1) do
       { key1: 'value1' }
     end
@@ -195,7 +193,7 @@ RSpec.describe HashKit::Helper do
     end
 
     [
-      "string"    ,  
+      'string'    ,  
       101         ,
       1.01        ,
       Time.now    ,
@@ -237,36 +235,35 @@ RSpec.describe HashKit::Helper do
   end
 
   describe '#from_hash' do
-
     let(:child_hash) do
       {
-          text: 'abc',
-          numeric: 5,
-          time: Time.now,
-          invalid_key: 5,
-          bool: true
+        text: 'abc',
+        numeric: 5,
+        time: Time.now,
+        invalid_key: 5,
+        bool: true
       }
     end
 
     let(:parent_hash) do
       {
-          text: 'abc',
-          numeric: 5,
-          time: Time.now,
-          entity: child_hash,
-          entity_array: [child_hash, child_hash],
-          invalid_key: 5,
-          bool: true
+        text: 'abc',
+        numeric: 5,
+        time: Time.now,
+        entity: child_hash,
+        entity_array: [child_hash, child_hash],
+        invalid_key: 5,
+        bool: true
       }
     end
 
     let(:string_hash) do
       {
-          'text' => 'abc',
-          'numeric' => 5,
-          'time' => Time.now,
-          'invalid_key' => 5,
-          'bool' => true
+        'text' => 'abc',
+        'numeric' => 5,
+        'time' => Time.now,
+        'invalid_key' => 5,
+        'bool' => true
       }
     end
 
@@ -337,6 +334,12 @@ RSpec.describe HashKit::Helper do
         expect(obj.entity_array[1]).to be_a(TestEntity)
       end
     end
+
+    context 'when hash is not a hash' do
+      it 'raises an ArgumentError' do
+        expect { subject.from_hash('Not a hash', TestEntity, transforms) }.to raise_error(ArgumentError)
+      end
+    end
   end
 
   describe '#indifferent' do
@@ -356,18 +359,22 @@ RSpec.describe HashKit::Helper do
           }
       }
     end
+
     it 'should allow access to a string key from a symbol' do
       subject.indifferent!(hash)
       expect(hash[:key1]).to eq 'value1'
     end
+
     it 'should allow access to a symbol key from a string' do
       subject.indifferent!(hash)
       expect(hash['key2']).to eq 'value2'
     end
+
     it 'should allow indifferent access to a key within an array' do
       subject.indifferent!(hash)
       expect(hash[:key3][0]['key4']).to eq 'value4'
     end
+
     it 'should allow indifferent access to a key within an nested hash' do
       subject.indifferent!(hash)
       expect(hash[:key6]['key7']).to eq 'value7'

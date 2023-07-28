@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 module HashKit
+  # Hash kit Helper class
   class Helper
-
-    #This method is called to make a hash allow indifferent access (it will accept both strings & symbols for a valid key).
+    # This method is called to make a hash allow indifferent access (it will
+    # accept both strings & symbols for a valid key).
     def indifferent!(hash)
-      unless hash.is_a?(Hash)
-        return
-      end
+      return unless hash.is_a?(Hash)
 
-      #set the default proc to allow the key to be either string or symbol if a matching key is found.
+      # Set the default proc to allow the key to be either string or symbol if
+      # a matching key is found.
       hash.default_proc = proc do |h, k|
         if h.key?(k.to_s)
           h[k.to_s]
@@ -18,9 +20,9 @@ module HashKit
         end
       end
 
-      #recursively process any child hashes
+      # Recursively process any child hashes
       hash.each do |key,value|
-        if hash[key] != nil
+        unless hash[key].nil?
           if hash[key].is_a?(Hash)
             indifferent!(hash[key])
           elsif hash[key].is_a?(Array)
@@ -33,9 +35,7 @@ module HashKit
     end
 
     def indifferent_array!(array)
-      unless array.is_a?(Array)
-        return
-      end
+      return unless array.is_a?(Array)
 
       array.each do |i|
         if i.is_a?(Hash)
@@ -46,14 +46,16 @@ module HashKit
       end
     end
 
-    #This method is called to convert all the keys of a hash into symbols to allow consistent usage of hashes within your Ruby application.
+    # This method is called to convert all the keys of a hash into symbols to
+    # allow consistent usage of hashes within your Ruby application.
     def symbolize(hash)
       {}.tap do |h|
         hash.each { |key, value| h[key.to_sym] = map_value_symbol(value) }
       end
     end
 
-    #This method is called to convert all the keys of a hash into strings to allow consistent usage of hashes within your Ruby application.
+    # This method is called to convert all the keys of a hash into strings to
+    # allow consistent usage of hashes within your Ruby application.
     def stringify(hash)
       {}.tap do |h|
         hash.each { |key, value| h[key.to_s] = map_value_string(value) }
@@ -73,18 +75,22 @@ module HashKit
       hash
     end
 
-    def from_hash(hash, klass, transforms =  [])
+    # Return an object of type klass from the values in the given hash
+    #
+    # @param [Hash] hash
+    # @param [Class] klass
+    # @param [Array] transforms
+    # @return [Object]
+    def from_hash(hash, klass, transforms = [])
       obj = klass.new
-      if hash ==nil || hash == {}
-        return obj
-      end
+      return obj if hash.nil? || hash.empty?
+      raise ArgumentError, "#{hash.inspect} is not a hash" unless hash.is_a?(Hash)
 
-      hash.each do |k,v|
-        if !obj.respond_to?(k)
-          next
-        end
+      hash.each do |k, v|
+        next unless obj.respond_to?(k)
+
         transform = transforms.detect { |t| t.key.to_sym == k.to_sym }
-        if transform != nil
+        if !transform.nil?
           if v.is_a?(Hash)
             child = from_hash(v, transform.klass, transforms)
             obj.instance_variable_set("@#{k}", child)
@@ -98,7 +104,8 @@ module HashKit
           obj.instance_variable_set("@#{k}", v)
         end
       end
-      return obj
+
+      obj
     end
 
     private
