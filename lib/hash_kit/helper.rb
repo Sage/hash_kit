@@ -3,6 +3,20 @@
 module HashKit
   # Hash kit Helper class
   class Helper
+    INDIFFERENT_PROC = proc do |h, k|
+      case k
+      when Symbol
+        # Symbol#name returns a frozen string without allocating (Ruby 3.0+)
+        str = k.name
+        h[str] if h.key?(str)
+      when String
+        sym = k.to_sym
+        h[sym] if h.key?(sym)
+      else
+        h[k.to_s]
+      end
+    end
+
     # This method is called to make a hash allow indifferent access (it will
     # accept both strings & symbols for a valid key).
     def indifferent!(hash)
@@ -10,24 +24,15 @@ module HashKit
 
       # Set the default proc to allow the key to be either string or symbol if
       # a matching key is found.
-      hash.default_proc = proc do |h, k|
-        if h.key?(k.to_s)
-          h[k.to_s]
-        elsif h.key?(k.to_sym)
-          h[k.to_sym]
-        else
-          nil
-        end
-      end
+      hash.default_proc = INDIFFERENT_PROC
 
       # Recursively process any child hashes
-      hash.each do |key,value|
-        unless hash[key].nil?
-          if hash[key].is_a?(Hash)
-            indifferent!(hash[key])
-          elsif hash[key].is_a?(Array)
-            indifferent_array!(hash[key])
-          end
+      hash.each_value do |value|
+        case value
+        when Hash
+          indifferent!(value)
+        when Array
+          indifferent_array!(value)
         end
       end
 
@@ -38,9 +43,10 @@ module HashKit
       return unless array.is_a?(Array)
 
       array.each do |i|
-        if i.is_a?(Hash)
+        case i
+        when Hash
           indifferent!(i)
-        elsif i.is_a?(Array)
+        when Array
           indifferent_array!(i)
         end
       end
