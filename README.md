@@ -1,8 +1,6 @@
 # HashKit
 
-[![Build Status](https://travis-ci.org/Sage/hash_kit.svg?branch=master)](https://travis-ci.org/Sage/hash_kit)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3ffb56b92ca96c783093/maintainability)](https://codeclimate.com/github/Sage/hash_kit/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/3ffb56b92ca96c783093/test_coverage)](https://codeclimate.com/github/Sage/hash_kit/test_coverage)
+[![RSpec](https://github.com/Sage/hash_kit/actions/workflows/rspec.yml/badge.svg?branch=master)](https://github.com/Sage/hash_kit/actions/workflows/rspec.yml)
 [![Gem Version](https://badge.fury.io/rb/hash_kit.svg)](https://badge.fury.io/rb/hash_kit)
 
 Welcome to your HashKit! HashKit is a toolkit for working with Ruby Hashes.
