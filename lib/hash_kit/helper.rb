@@ -3,6 +3,16 @@
 module HashKit
   # Hash kit Helper class
   class Helper
+    INDIFFERENT_PROC = proc do |h, k|
+      if h.key?(k.to_s)
+        h[k.to_s]
+      elsif h.key?(k.to_sym)
+        h[k.to_sym]
+      else
+        nil
+      end
+    end
+
     # This method is called to make a hash allow indifferent access (it will
     # accept both strings & symbols for a valid key).
     def indifferent!(hash)
@@ -10,15 +20,7 @@ module HashKit
 
       # Set the default proc to allow the key to be either string or symbol if
       # a matching key is found.
-      hash.default_proc = proc do |h, k|
-        if h.key?(k.to_s)
-          h[k.to_s]
-        elsif h.key?(k.to_sym)
-          h[k.to_sym]
-        else
-          nil
-        end
-      end
+      hash.default_proc = INDIFFERENT_PROC
 
       # Recursively process any child hashes
       hash.each do |key,value|
